@@ -1,10 +1,10 @@
     var APIKey = 'e7610467436ab1c59773adeceb236ff7'
     
 
-    exchangeRates();
+    /* exchangeRates();
     hotelBooking();
     restaurants();
-    weather();
+    weather(); */
     
     function exchangeRates() {
         var query = "http://api.currencylayer.com/live?access_key=c783200a0ae3d77071075137f56ccece";
@@ -73,3 +73,15 @@
                 $('.windSpeed').text('Wind Speed:' + response.wind.speed)
                 $('.clouds').text('Clouds:' + response.clouds.all)
             });
+        }
+
+
+    $('#search-form').on('submit', function(e){
+        e.preventDefault()
+        var search = $('#search-text').val()
+        exchangeRates(search);
+        hotelBooking(search);
+        restaurants(search);
+    })
+
+    

@@ -13,6 +13,7 @@ body {
     
 }
 
+
 .map {
     position: relative;
     overflow: hidden;
@@ -27,7 +28,7 @@ body {
     border-radius: 2px;
     border: black;
 
-}
+} 
 
 .container {
     background:gray;
