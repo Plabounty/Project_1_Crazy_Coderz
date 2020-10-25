@@ -82,6 +82,22 @@
         }
 
 
+        function populateSearch() {
+            var searchHistory = localStorage.getItem('searchHistory') || '[]';
+            var listOfSearchHistory = [...JSON.parse(searchHistory)];
+            document.getElementById("search-text").value = "";
+            document.getElementById("search-list").innerHTML = "";
+            for (var i = listOfSearchHistory.length - 1; i >= 0; i--) {
+              var listElement = document.createElement("li");
+              var clickableElement = document.createElement("a");
+              clickableElement.href = "#";
+              clickableElement.textContent = listOfSearchHistory[i];
+              document.getElementById("search-list").appendChild(listElement);
+              listElement.appendChild(clickableElement);
+              clickableElement.onclick = search;
+            }
+          }
+        
      
 
     $('#search-form').on('submit', function(e){
@@ -90,5 +106,10 @@
         exchangeRates(search);
         hotelBooking(search);
         restaurants(search);
-        weatherCall(search)
+        weatherCall(search);
+        var searchHistory = localStorage.getItem('searchHistory') || '[]';
+        var listOfSearchHistory = [...JSON.parse(searchHistory), search];
+        localStorage.setItem("searchHistory", JSON.stringify(listOfSearchHistory));
+        populateSearch();
     })
+
