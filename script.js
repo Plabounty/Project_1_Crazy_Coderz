@@ -1,14 +1,10 @@
     var APIKey = 'e7610467436ab1c59773adeceb236ff7'
-    
 
-<<<<<<< HEAD
-    /* exchangeRates();
-    hotelBooking();
-    restaurants();
-    weather(); */
-=======
+
+
+
+
     
->>>>>>> 82e90701e124023b134a714322685a041e7a9b07
     
     function exchangeRates() {
         var query = "http://api.currencylayer.com/live?access_key=c783200a0ae3d77071075137f56ccece";
@@ -39,7 +35,25 @@
         }
         
         $.ajax(settings).done(function (response) {
-            console.log(response);
+            console.log('City: ', response);
+            var coord = response.suggestions[0].entities[0];
+            console.log('Coord: ', coord)
+            $('#map').empty().append(`
+            
+            <iframe
+            class="iframe"
+            src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d24823.574025673028!2d-${coord.latitude}!3d${coord.longitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1603224169167!5m2!1sen!2sus"
+            width="400"
+            height="300"
+            frameborder="0"
+            style="border: 0"
+            allowfullscreen=""
+            aria-hidden="false"
+            tabindex="0"
+          ></iframe>
+
+            `)
+
             $('.hotels').text('Hotels: ' + response.suggestions[3].entities[0].name + '/' + response.suggestions[3].entities[1].name )
         });
             
@@ -78,16 +92,6 @@
              url: queryURL,
              method: 'GET'
             })
-<<<<<<< HEAD
-            .then(function(response) {
-                console.log(queryURL)
-                console.log(response) 
-                $(".city").html("<h1>" + response.name + " Weather Details</h1>");
-                $('.temp').text('Temperature: (F)' + response.main.temp)
-                $('.humidity').text('Humidity:' + response.main.humidity)
-                $('.windSpeed').text('Wind Speed:' + response.wind.speed)
-                $('.clouds').text('Clouds:' + response.clouds.all)
-=======
 
              .then(function(response) {
                  console.log(queryURL)
@@ -95,27 +99,17 @@
                  $('.weather').text('Weather:' + response.main.temp + ' °F')
                  $('.location').text('Location: ' + response.name) 
                 
->>>>>>> 82e90701e124023b134a714322685a041e7a9b07
             });
         }
 
 
-<<<<<<< HEAD
-=======
      
 
->>>>>>> 82e90701e124023b134a714322685a041e7a9b07
     $('#search-form').on('submit', function(e){
         e.preventDefault()
         var search = $('#search-text').val()
         exchangeRates(search);
         hotelBooking(search);
         restaurants(search);
-<<<<<<< HEAD
-    })
-
-    
-=======
         weatherCall(search)
     })
->>>>>>> 82e90701e124023b134a714322685a041e7a9b07
