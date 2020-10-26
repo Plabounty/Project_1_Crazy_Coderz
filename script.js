@@ -1,4 +1,9 @@
-    var APIKey = 'e7610467436ab1c59773adeceb236ff7'
+$(document).ready(function () {
+    
+    var APIKey = 'e7610467436ab1c59773adeceb236ff7';
+    populateSearch();
+    defaultSearch();
+
     
 
     
@@ -75,7 +80,7 @@
              .then(function(response) {
                  console.log(queryURL)
                  console.log(response)
-                 $('.weather').text('Weather:' + response.main.temp + ' °F')
+                 $('.weather').text('Weather: ' + response.main.temp + ' °F')
                  $('.location').text('Location: ' + response.name) 
                 
             });
@@ -94,11 +99,34 @@
               clickableElement.textContent = listOfSearchHistory[i];
               document.getElementById("search-list").appendChild(listElement);
               listElement.appendChild(clickableElement);
-              clickableElement.onclick = search;
+              clickableElement.onclick = searchCity;
             }
+          }
+
+
+          function searchCity() {
+            var search = this.textContent;
+            exchangeRates(search);
+            hotelBooking(search);
+            restaurants(search);
+            weatherCall(search);
+            var searchHistory = localStorage.getItem('searchHistory') || '[]';
+            var listOfSearchHistory = [...JSON.parse(searchHistory), search];
+            localStorage.setItem("searchHistory", JSON.stringify(listOfSearchHistory));
+            populateSearch();
           }
         
      
+          function defaultSearch() {
+            var searchHistory = localStorage.getItem('searchHistory') || '[]';
+            var listOfSearchHistory = [...JSON.parse(searchHistory)];
+            search = listOfSearchHistory[listOfSearchHistory.length - 1];
+            exchangeRates(search);
+            hotelBooking(search);
+            restaurants(search);
+            weatherCall(search);
+          }
+
 
     $('#search-form').on('submit', function(e){
         e.preventDefault()
@@ -113,3 +141,4 @@
         populateSearch();
     })
 
+});
