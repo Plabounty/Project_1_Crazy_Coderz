@@ -46,6 +46,26 @@ body {
     margin-top: 25px;
 }
 
+#search-list li{
+    list-style: none;
+    text-align: center;
+    border: 1px solid black;
+    margin: 2px;
+    max-width: 200px;
+    background-color: white;
+}
+
+#search-list li a {
+    text-decoration: none;
+    color: black;
+    display: block;
+}
+
+#search-list li a:hover {
+    text-decoration: none;
+    background-color: cyan;
+}
+
 .title {
     text-align: center;
 }

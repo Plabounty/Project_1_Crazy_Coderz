@@ -1,8 +1,18 @@
+<<<<<<< HEAD
     var APIKey = 'e7610467436ab1c59773adeceb236ff7'
 
 
 
 
+=======
+$(document).ready(function () {
+    
+    var APIKey = 'e7610467436ab1c59773adeceb236ff7';
+    populateSearch();
+    defaultSearch();
+
+    
+>>>>>>> cfccf1e493f3c9a6e77b560528e4abf2496b193b
 
     
     
@@ -96,14 +106,53 @@
              .then(function(response) {
                  console.log(queryURL)
                  console.log(response)
-                 $('.weather').text('Weather:' + response.main.temp + ' °F')
+                 $('.weather').text('Weather: ' + response.main.temp + ' °F')
                  $('.location').text('Location: ' + response.name) 
                 
             });
         }
 
 
+        function populateSearch() {
+            var searchHistory = localStorage.getItem('searchHistory') || '[]';
+            var listOfSearchHistory = [...JSON.parse(searchHistory)];
+            document.getElementById("search-text").value = "";
+            document.getElementById("search-list").innerHTML = "";
+            for (var i = listOfSearchHistory.length - 1; i >= 0; i--) {
+              var listElement = document.createElement("li");
+              var clickableElement = document.createElement("a");
+              clickableElement.href = "#";
+              clickableElement.textContent = listOfSearchHistory[i];
+              document.getElementById("search-list").appendChild(listElement);
+              listElement.appendChild(clickableElement);
+              clickableElement.onclick = searchCity;
+            }
+          }
+
+
+          function searchCity() {
+            var search = this.textContent;
+            exchangeRates(search);
+            hotelBooking(search);
+            restaurants(search);
+            weatherCall(search);
+            var searchHistory = localStorage.getItem('searchHistory') || '[]';
+            var listOfSearchHistory = [...JSON.parse(searchHistory), search];
+            localStorage.setItem("searchHistory", JSON.stringify(listOfSearchHistory));
+            populateSearch();
+          }
+        
      
+          function defaultSearch() {
+            var searchHistory = localStorage.getItem('searchHistory') || '[]';
+            var listOfSearchHistory = [...JSON.parse(searchHistory)];
+            search = listOfSearchHistory[listOfSearchHistory.length - 1];
+            exchangeRates(search);
+            hotelBooking(search);
+            restaurants(search);
+            weatherCall(search);
+          }
+
 
     $('#search-form').on('submit', function(e){
         e.preventDefault()
@@ -111,5 +160,16 @@
         exchangeRates(search);
         hotelBooking(search);
         restaurants(search);
+<<<<<<< HEAD
         weatherCall(search)
     })
+=======
+        weatherCall(search);
+        var searchHistory = localStorage.getItem('searchHistory') || '[]';
+        var listOfSearchHistory = [...JSON.parse(searchHistory), search];
+        localStorage.setItem("searchHistory", JSON.stringify(listOfSearchHistory));
+        populateSearch();
+    })
+
+});
+>>>>>>> cfccf1e493f3c9a6e77b560528e4abf2496b193b
