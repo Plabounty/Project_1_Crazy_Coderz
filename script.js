@@ -141,7 +141,7 @@ $(document).ready(function () {
         populateSearch();
     })
 
-<!-- feature-map -->
+    /* feature-map */
 
     
 
