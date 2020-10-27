@@ -40,21 +40,8 @@ $(document).ready(function () {
             console.log('City: ', response);
             var coord = response.suggestions[0].entities[0];
             console.log('Coord: ', coord)
-            $('#map').empty().append(`
-            
-            <iframe
-            class="iframe"
-            src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d24823.574025673028!2d-${coord.latitude}!3d${coord.longitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1603224169167!5m2!1sen!2sus"
-            width="400"
-            height="300"
-            frameborder="0"
-            style="border: 0"
-            allowfullscreen=""
-            aria-hidden="false"
-            tabindex="0"
-          ></iframe>
-
-            `)
+            initMap(coord.latitude,coord.longitude )
+        
 
             $('.hotels').text('Hotels: ' + response.suggestions[3].entities[0].name + '/' + response.suggestions[3].entities[1].name )
         });
@@ -162,7 +149,13 @@ $(document).ready(function () {
 
     
 
-
+    function initMap(lat, lon) {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: lat, lng: lon },
+            scrollwheel: true,
+            zoom: 8
+        });
+    } 
 
 
 
