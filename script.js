@@ -30,14 +30,14 @@ $(document).ready(function () {
         }
         
         $.ajax(settings).done(function (response) {
-<!-- feature-map -->
+/*feature-map */ 
             console.log('City: ', response);
             var coord = response.suggestions[0].entities[0];
             console.log('Coord: ', coord)
             initMap(coord.latitude,coord.longitude )
         
             console.log(response);
-<!-- develop -->
+/* develop */
             $('.hotels').text('Hotels: ' + response.suggestions[3].entities[0].name + '/' + response.suggestions[3].entities[1].name )
         });
             
@@ -156,6 +156,6 @@ $(document).ready(function () {
 
 
 });
-=======
-});
-<!-- develop -->
+
+
+/* develop */
