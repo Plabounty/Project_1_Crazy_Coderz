@@ -11,6 +11,12 @@
     />
     <link rel="stylesheet" href="style.css" />
     <title>DownToEarthTravel</title>
+  <style>
+    #map{
+      height:400px;
+      width:100%;
+    }
+  </style>
   </head>
 
   <body>
@@ -59,7 +65,7 @@
         allowfullscreen=""
         aria-hidden="false"
         tabindex="0"
-      ></iframe>
+      ></iframe> 
 
 
 
@@ -81,12 +87,38 @@
   <!-- may need another js file for the map -->    
   <script>
     function initMap(){
+      // Map options
       var options = {
         zoom:8,
-        center:{lat:42.3601,lng:-71.0589}
+        center:{lat:38.9536, lng:94.7336}
       }
-      var map = 
+      // New map
+      var map = new google.maps.Map(document.getElementById('map'), options);
+      /*
+      //Add marker
+      var marker = new google.maps.Marker({
+        position:{lat:37.0842, lng:94.5133},
+        map:map
+      });
+      var infoWindow = new google.maps.InfoWindow({
+        content:'<h1>Joplin MO</h1>'
+      });
+      marker.addListener('click', function(){
+        infoWindow.open(map, marker);
+      });
+      */
+
+      addMarker({lat:40.7128, lng:74.0060}); // NYC
+      addMarker({lat:41.8781, lng:87.6298}); // Chicago
+      addMarker({lat:51.5074, lng:0.1278}); //London, England
+      // Add Marker Function
+      function addMarker(coords){
+        var marker = new google.maps.Marker({
+        position:coords,
+        map:map
+      }
     }
+
   </script>
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"
   integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
@@ -94,6 +126,7 @@
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWg-MTxZaDTkqpNbZcJD1sndZTFwh5UJU&callback=initMap&libraries=&v=weekly"
       defer
     ></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
       <script src="script.js"></script>  
   </body>
   
