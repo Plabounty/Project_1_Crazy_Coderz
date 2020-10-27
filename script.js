@@ -4,10 +4,6 @@ $(document).ready(function () {
     populateSearch();
     defaultSearch();
 
-    
-
-    
-    
     function exchangeRates() {
         var query = "http://api.currencylayer.com/live?access_key=c783200a0ae3d77071075137f56ccece";
             $.ajax({
@@ -18,9 +14,6 @@ $(document).ready(function () {
               console.log(response);
               $('.currency').text('Currency:' + ' USD/GBP ' + response.quotes.USDGBP + ' USD/EUR ' + response.quotes.USDEUR + ' USD/JPY ' + response.quotes.USDJPY + ' USD/RUB ' + response.quotes.USDRUB)
             });
-
-            
-          
       }
 
 
@@ -37,7 +30,14 @@ $(document).ready(function () {
         }
         
         $.ajax(settings).done(function (response) {
+<!-- feature-map -->
+            console.log('City: ', response);
+            var coord = response.suggestions[0].entities[0];
+            console.log('Coord: ', coord)
+            initMap(coord.latitude,coord.longitude )
+        
             console.log(response);
+<!-- develop -->
             $('.hotels').text('Hotels: ' + response.suggestions[3].entities[0].name + '/' + response.suggestions[3].entities[1].name )
         });
             
@@ -141,4 +141,21 @@ $(document).ready(function () {
         populateSearch();
     })
 
+<!-- feature-map -->
+
+    
+
+    function initMap(lat, lon) {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: lat, lng: lon },
+            scrollwheel: true,
+            zoom: 8
+        });
+    } 
+
+
+
 });
+=======
+});
+<!-- develop -->
