@@ -1,3 +1,13 @@
+* {
+    margin: 0;
+    padding: 0;
+  }
+
+  #map {
+    height: 500px;
+    width: 100%;
+  }
+
 body {
     
     font-family: Georgia, "Times New Roman", Times, serif;
@@ -13,6 +23,7 @@ body {
     
 }
 
+
 .map {
     position: relative;
     overflow: hidden;
@@ -27,14 +38,12 @@ body {
     border-radius: 2px;
     border: black;
 
-}
+} 
 
 .cityInfo {
     background:gray;
     opacity: 0.9;
     color: black;
-    align-items: center;
-    width: 98vw;
 }
 
 .footer {
