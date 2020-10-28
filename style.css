@@ -23,6 +23,7 @@ body {
     
 }
 
+
 .map {
     position: relative;
     overflow: hidden;
@@ -37,7 +38,7 @@ body {
     border-radius: 2px;
     border: black;
 
-}
+} 
 
 .cityInfo {
     background:gray;
