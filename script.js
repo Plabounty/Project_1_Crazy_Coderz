@@ -1,6 +1,9 @@
 $(document).ready(function () {
 
     var APIKey = 'e7610467436ab1c59773adeceb236ff7';
+    let map;
+    var latitude =0;
+    var longitude =0;
     populateSearch();
     defaultSearch();
 
@@ -29,30 +32,30 @@ $(document).ready(function () {
         };
 
         $.ajax(settings).done(function (response) {
-            /*feature-map */
-            console.log('City: ', response);
-            var coord = response.suggestions[0].entities[0];
-            console.log('Coord: ', coord)
-            initMap(coord.latitude, coord.longitude)
+        //     /*feature-map */
+        //     console.log('City: ', response);
+        //     var coord = response.suggestions[0].entities[0];
+        //     console.log('Coord: ', coord)
+        //     initMap(coord.latitude, coord.longitude)
 
-            console.log(response);
-            /* develop */
-            console.log('City: ', response);
-            var coord = response.suggestions[0].entities[0];
-            console.log('Coord: ', coord)
-            $('#map').empty().append(`
-            <iframe
-            class="iframe"
-            src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d24823.574025673028!2d-${coord.latitude}!3d${coord.longitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1603224169167!5m2!1sen!2sus"
-            width="400"
-            height="300"
-            frameborder="0"
-            style="border: 0"
-            allowfullscreen=""
-            aria-hidden="false"
-            tabindex="0"
-          ></iframe>
-            `)
+        //     console.log(response);
+        //     /* develop */
+        //     console.log('City: ', response);
+        //     var coord = response.suggestions[0].entities[0];
+        //     console.log('Coord: ', coord)
+        //     $('#map').empty().append(`
+        //     <iframe
+        //     class="iframe"
+        //     src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d24823.574025673028!2d-${coord.latitude}!3d${coord.longitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1603224169167!5m2!1sen!2sus"
+        //     width="400"
+        //     height="300"
+        //     frameborder="0"
+        //     style="border: 0"
+        //     allowfullscreen=""
+        //     aria-hidden="false"
+        //     tabindex="0"
+        //   ></iframe>
+        //     `)
 
             $('.hotels').text('Hotels: ' + response.suggestions[3].entities[0].name + '/' + response.suggestions[3].entities[1].name)
         });
@@ -71,13 +74,14 @@ $(document).ready(function () {
             console.log(response)
             $('.weather').text('Weather: ' + response.main.temp + ' °F')
             $('.location').text('Location: ' + response.name)
+            initMap(response.coord.lat, response.coord.lon);
 
         });  
     }
 
-    function initMap() {
-        var map = new google.maps.Map(document.getElementById('map'), {
-            center: { lat: 39.983334, lng: -82.983330 },
+    function initMap(lati,long) {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: lati, lng: long },
             scrollwheel: true,
             zoom: 8
         });
@@ -88,8 +92,13 @@ $(document).ready(function () {
         var listOfSearchHistory = [...JSON.parse(searchHistory)];
         document.getElementById("search-text").value = "";
         document.getElementById("search-list").innerHTML = "";
-        for (var i = listOfSearchHistory.length - 1; i >= 0; i--) {
+        var count = 10;
+        if (listOfSearchHistory.length < count) {
+            count = listOfSearchHistory.length;
+        }
+        for (var i = listOfSearchHistory.length - 1; i >= listOfSearchHistory.length - count; i--) {
             var listElement = document.createElement("li");
+            listElement.setAttribute("class", "collection-item")
             var clickableElement = document.createElement("a");
             clickableElement.href = "#";
             clickableElement.textContent = listOfSearchHistory[i];
@@ -125,7 +134,7 @@ $(document).ready(function () {
         var search = $('#search-text').val()
         exchangeRates(search);
         hotelBooking(search);
-        weatherCall(search)
+        weatherCall(search);
         var searchHistory = localStorage.getItem('searchHistory') || '[]';
         var listOfSearchHistory = [...JSON.parse(searchHistory), search];
         localStorage.setItem("searchHistory", JSON.stringify(listOfSearchHistory));
