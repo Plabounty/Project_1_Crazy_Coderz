@@ -5,11 +5,10 @@
 
   #map {
     height: 500px;
-    width: 100%;
+    width: 50%;
   }
 
 body {
-    
     font-family: Georgia, "Times New Roman", Times, serif;
     font-size: 18px;
     line-height: 125%;
@@ -20,28 +19,22 @@ body {
     background-size: cover;
     height: 100vh;
     width: 100vw;
-    
 }
 
-
-.map {
-    position: relative;
-    overflow: hidden;
-    padding-left:390px;
-}
-
-.iframe {
+#map {
     top: 0;
     left: 0;
     width: 74.5%;
     height: 350px;
     border-radius: 2px;
     border: black;
-
-} 
+    position: relative;
+    overflow: hidden;
+    padding-left:390px;
+}
 
 .cityInfo {
-    background:gray;
+    background: rgb(197, 196, 196);
     opacity: 0.9;
     color: black;
 }
@@ -79,7 +72,3 @@ body {
 .title {
     text-align: center;
 }
-
-
-
-

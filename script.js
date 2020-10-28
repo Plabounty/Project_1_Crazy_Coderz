@@ -26,7 +26,7 @@ $(document).ready(function () {
                 "x-rapidapi-host": "hotels4.p.rapidapi.com",
                 "x-rapidapi-key": "efb9190d78msh44fd7735c9188a6p17edbfjsn0f3829e74837"
             }
-        }
+        };
 
         $.ajax(settings).done(function (response) {
             /*feature-map */
@@ -41,7 +41,6 @@ $(document).ready(function () {
             var coord = response.suggestions[0].entities[0];
             console.log('Coord: ', coord)
             $('#map').empty().append(`
-            
             <iframe
             class="iframe"
             src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d24823.574025673028!2d-${coord.latitude}!3d${coord.longitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1603224169167!5m2!1sen!2sus"
@@ -53,35 +52,12 @@ $(document).ready(function () {
             aria-hidden="false"
             tabindex="0"
           ></iframe>
-
             `)
 
             $('.hotels').text('Hotels: ' + response.suggestions[3].entities[0].name + '/' + response.suggestions[3].entities[1].name)
         });
     };
 
-    function restaurants(city) {
-        const settings = {
-            "async": true,
-            "crossDomain": true,
-            "url": "https://rapidapi.p.rapidapi.com/photos",
-            "method": "POST",
-            "headers": {
-                "content-type": "application/x-www-form-urlencoded",
-                "x-rapidapi-host": "worldwide-restaurants.p.rapidapi.com",
-                "x-rapidapi-key": "efb9190d78msh44fd7735c9188a6p17edbfjsn0f3829e74837"
-            },
-            "data": {
-                "language": "en_US",
-                "location_id": "15333482",
-                "currency": "USD",
-                "limit": "1"
-            }
-        };
-        $.ajax(settings).done(function (response) {
-            console.log(response);
-        });
-    }
 
     function weatherCall(city) {
         console.log(city)
@@ -90,15 +66,21 @@ $(document).ready(function () {
         $.ajax({
             url: queryURL,
             method: 'GET'
-        })
+        }).then(function (response) {
+            console.log(queryURL)
+            console.log(response)
+            $('.weather').text('Weather: ' + response.main.temp + ' °F')
+            $('.location').text('Location: ' + response.name)
 
-            .then(function (response) {
-                console.log(queryURL)
-                console.log(response)
-                $('.weather').text('Weather: ' + response.main.temp + ' °F')
-                $('.location').text('Location: ' + response.name)
+        });  
+    }
 
-            });
+    function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: 39.983334, lng: -82.983330 },
+            scrollwheel: true,
+            zoom: 8
+        });
     }
 
     function populateSearch() {
@@ -117,12 +99,10 @@ $(document).ready(function () {
         }
     }
 
-
     function searchCity() {
         var search = this.textContent;
         exchangeRates(search);
         hotelBooking(search);
-        restaurants(search);
         weatherCall(search);
         var searchHistory = localStorage.getItem('searchHistory') || '[]';
         var listOfSearchHistory = [...JSON.parse(searchHistory), search];
@@ -137,44 +117,18 @@ $(document).ready(function () {
         search = listOfSearchHistory[listOfSearchHistory.length - 1];
         exchangeRates(search);
         hotelBooking(search);
-        restaurants(search);
         weatherCall(search);
     }
-
 
     $('#search-form').on('submit', function (e) {
         e.preventDefault()
         var search = $('#search-text').val()
         exchangeRates(search);
         hotelBooking(search);
-        restaurants(search);
-
-        weatherCall(search);
+        weatherCall(search)
         var searchHistory = localStorage.getItem('searchHistory') || '[]';
         var listOfSearchHistory = [...JSON.parse(searchHistory), search];
         localStorage.setItem("searchHistory", JSON.stringify(listOfSearchHistory));
         populateSearch();
     })
-
-
-    /* feature-map */
-
-
-
-    function initMap(lat, lon) {
-        var map = new google.maps.Map(document.getElementById('map'), {
-            center: { lat: lat, lng: lon },
-            scrollwheel: true,
-            zoom: 8
-        });
-    }
-
-
-
 });
-
-
-/* develop */
-
-
-
