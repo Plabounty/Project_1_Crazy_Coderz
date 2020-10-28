@@ -15,7 +15,7 @@ $(document).ready(function () {
 
         }).then(function (response) {
             console.log(response);
-            $('.currency').text('Currency:' + ' USD/GBP ' + response.quotes.USDGBP + ' USD/EUR ' + response.quotes.USDEUR + ' USD/JPY ' + response.quotes.USDJPY + ' USD/RUB ' + response.quotes.USDRUB)
+            $('.currency').text('Currency:' + '  USD/GBP  ' + response.quotes.USDGBP + '  USD/EUR  ' + response.quotes.USDEUR + '  USD/JPY  ' + response.quotes.USDJPY + '  USD/RUB  ' + response.quotes.USDRUB)
         });
     }
 
@@ -27,36 +27,11 @@ $(document).ready(function () {
             "method": "GET",
             "headers": {
                 "x-rapidapi-host": "hotels4.p.rapidapi.com",
-                "x-rapidapi-key": "efb9190d78msh44fd7735c9188a6p17edbfjsn0f3829e74837"
+                "x-rapidapi-key": "d1d3ee5eccmsh8bdee8240526fecp19e054jsn60d5b59645ff"
             }
         };
 
         $.ajax(settings).done(function (response) {
-        //     /*feature-map */
-        //     console.log('City: ', response);
-        //     var coord = response.suggestions[0].entities[0];
-        //     console.log('Coord: ', coord)
-        //     initMap(coord.latitude, coord.longitude)
-
-        //     console.log(response);
-        //     /* develop */
-        //     console.log('City: ', response);
-        //     var coord = response.suggestions[0].entities[0];
-        //     console.log('Coord: ', coord)
-        //     $('#map').empty().append(`
-        //     <iframe
-        //     class="iframe"
-        //     src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d24823.574025673028!2d-${coord.latitude}!3d${coord.longitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1603224169167!5m2!1sen!2sus"
-        //     width="400"
-        //     height="300"
-        //     frameborder="0"
-        //     style="border: 0"
-        //     allowfullscreen=""
-        //     aria-hidden="false"
-        //     tabindex="0"
-        //   ></iframe>
-        //     `)
-
             $('.hotels').text('Hotels: ' + response.suggestions[3].entities[0].name + '/' + response.suggestions[3].entities[1].name)
         });
     };
