@@ -1,133 +1,117 @@
-var city=""; 
-var url="";
-var key="";
-var queryUrl ="";
-var currentUrl = "";
-var citiesDiv = document.getElementById("recentSearches");
-var cities = []; 
+$(document).ready(function () { 
 
-function init(){
-    var savedCities = JSON.parse(localStorage.getItem("cities"));
-    if (savedCities !== null){
-        cities = savedCities
-    }   
-    renderButtons(); 
-}
-init();
+    var APIKey = 'e7610467436ab1c59773adeceb236ff7';
+    populateSearch();
+    defaultSearch();
 
-function clickList(){
-    $(".listbtn").on("click", function(event){
-        event.preventDefault();
-        city = $(this).text().trim();
-        APIcalls(); 
-    })
-}
-clickList();
+    function exchangeRates() {
+        var query = "http://api.currencylayer.com/live?access_key=c783200a0ae3d77071075137f56ccece";
+            $.ajax({
+              url: query,
+              method: "GET"
+            }).then(function (response) {
+                console.log(response);
+                $('.currency').text('Currency:' + ' USD/GBP ' + response.quotes.USDGBP + ' USD/EUR ' + response.quotes.USDEUR + ' USD/JPY ' + response.quotes.USDJPY + ' USD/RUB ' + response.quotes.USDRUB)
+            });
+    };
 
-function searchClicker() {
-    $("#searchbtn").on("click", function(event){
-        event.preventDefault();
-        city = $(this).prev().val().trim()
-        cities.push(city);
-        if(cities.length > 8){
-            cities.shift()
+    function hotelBooking(city) {
+        var settings = {
+            "async": true,
+            "crossDomain": true,
+            "url": "https://hotels4.p.rapidapi.com/locations/search?locale=en_US&query=" + city,
+            "method": "GET",
+            "headers": {
+                "x-rapidapi-host": "hotels4.p.rapidapi.com",
+                "x-rapidapi-key": "efb9190d78msh44fd7735c9188a6p17edbfjsn0f3829e74837"
         }
-        if (city == ""){
-            return; 
-        }
-        APIcalls();
-        cityStorage(); 
-        renderButtons();
-    })
-}
-searchClicker();
- 
-function cityStorage(){
-    localStorage.setItem("cities", JSON.stringify(cities)); 
-}
-
-function renderButtons(){
-    citiesDiv.innerHTML = ""; 
-    if(cities == null){
-        return;
     }
-    var newCity = [...new Set(cities)];
-    for(var i=0; i < newCity.length; i++){
-        var cityName = newCity[i]; 
-        var buttonEl = document.createElement("button");
-        buttonEl.textContent = cityName; 
-        buttonEl.setAttribute("class", "listbtn"); 
-        citiesDiv.appendChild(buttonEl);
-        clickList();
-      }
+        
+        $.ajax(settings).done(function (response) {
+            console.log('City: ', response);
+            var coord = response.suggestions[0].entities[0];
+            console.log('Coord: ', coord)
+            initMap(coord.latitude,coord.longitude)
+            console.log(response);
+            $('.hotels').text('Hotels: ' + response.suggestions[3].entities[0].name + '/' + response.suggestions[3].entities[1].name )
+        });    
+    };
+
+    function weatherCall(city) {
+        console.log(city)
+    var queryURL = 'https://api.openweathermap.org/data/2.5/weather?q='+city+'&appid=' + APIKey + '&units=imperial';
+         $.ajax({
+             url: queryURL,
+             method: 'GET'
+            }).then(function(response) {
+                 console.log(queryURL)
+                 console.log(response)
+                 $('.weather').text('Weather: ' + response.main.temp + ' °F')
+                 $('.location').text('Location: ' + response.name) 
+            });
     }
 
-function APIcalls(){
-    url = "https://api.openweathermap.org/data/2.5/forecast?q=";    
-    currentUrl = "https://api.openweathermap.org/data/2.5/weather?q=";
-    key = "&appid=cd12c82f6f4c333cf972f80da362c556";
-    queryUrl = url + city + key;
-    currentWeatherUrl = currentUrl + city + key; 
-    
-    $("#cityName").text("Today's Weather in " + city);
-    $.ajax({
-    url: queryUrl,
-    method: "GET",
-    }).then(function(response){
-        var dayNum = 0;
-        for(var i = 0; i < response.list.length; i++) {
-            if(response.list[i].dt_txt.split(" ")[1] == "15:00:00") {
-                var day = response.list[i].dt_txt.split("-")[2].split(" ")[0];
-                var month = response.list[i].dt_txt.split("-")[1];
-                var year = response.list[i].dt_txt.split("-")[0];
-                var temp = Math.round(((response.list[i].main.temp - 273.15) *9/5+32));
-                
-                $("#" + dayNum + "date").text(month + "/" + day + "/" + year); 
-                $("#" + dayNum + "forcastTemp").text("Temp: " + temp + String.fromCharCode(176)+"F");
-                $("#" + dayNum + "forcastHum").text("Humidity: " + response.list[i].main.humidity);
-                $("#" + dayNum + "forcastIcon").attr("src", "http://openweathermap.org/img/w/" + response.list[i].weather[0].icon + ".png");
-                dayNum++; 
-            }   
+    function populateSearch() {
+        var searchHistory = localStorage.getItem('searchHistory') || '[]';
+        var listOfSearchHistory = [...JSON.parse(searchHistory)];
+        document.getElementById("search-text").value = "";
+        document.getElementById("search-list").innerHTML = "";
+        for (var i = listOfSearchHistory.length - 1; i >= 0; i--) {
+            var listElement = document.createElement("li");
+            var clickableElement = document.createElement("a");
+            clickableElement.href = "#";
+            clickableElement.textContent = listOfSearchHistory[i];
+            document.getElementById("search-list").appendChild(listElement);
+            listElement.appendChild(clickableElement);
+            clickableElement.onclick = searchCity;
         }
-    });
+    }
 
-    $.ajax({
-        url:currentWeatherUrl,
-        method: "GET", 
-    }).then(function(currentData){
-        var temp = Math.round(((currentData.main.temp - 273.15) * 9/5 + 32))
-        $("#currentTemp").text("Temperature: " + temp + String.fromCharCode(176)+"F");
-        $("#currentHum").text("Humidity: " + currentData.main.humidity);
-        $("#currentWind").text("Wind Speed: " + currentData.wind.speed);
-        $("#currentIcon").attr({"src": "http://openweathermap.org/img/w/" + currentData.weather[0].icon + ".png",
-            "height": "100px", "width":"100px"});
-        var lon = currentData.coord.lon;
-        var lat = currentData.coord.lat;
+    function searchCity() {
+        var search = this.textContent;
+        exchangeRates(search);
+        hotelBooking(search);
+        weatherCall(search);
+        var searchHistory = localStorage.getItem('searchHistory') || '[]';
+        var listOfSearchHistory = [...JSON.parse(searchHistory), search];
+        localStorage.setItem("searchHistory", JSON.stringify(listOfSearchHistory));
+        populateSearch();
+    }
+        
+    function defaultSearch() {
+        var searchHistory = localStorage.getItem('searchHistory') || '[]';
+        var listOfSearchHistory = [...JSON.parse(searchHistory)];
+        search = listOfSearchHistory[listOfSearchHistory.length - 1];
+        exchangeRates(search);
+        hotelBooking(search);
+        weatherCall(search);
+    }
 
-        var queryURL2 = "https://api.openweathermap.org/data/2.5/uvi?="+ key+ "&lat=" + lat +"&lon=" + lon;
-        $.ajax({
-            url: queryURL2,
-            method: "GET"
-        }).then(function(responseuv) {
-            var cityUV = $("<span>").text(responseuv.value);
-            var cityUVp = $("#currentUv").text("UV Index: ");
-            cityUVp.append(cityUV);
-            $("#currentUv").append(cityUVp);
-            if(responseuv.value > 0 && responseuv.value <=2){
-                cityUV.attr("class","green")
-            }
-            else if (responseuv.value > 2 && responseuv.value <= 5){
-                cityUV.attr("class","yellow")
-            }
-            else if (responseuv.value >5 && responseuv.value <= 7){
-                cityUV.attr("class","orange")
-            }
-            else if (responseuv.value >7 && responseuv.value <= 10){
-                cityUV.attr("class","red")
-            }
-            else{
-                cityUV.attr("class","purple")
-            }
+    $('#search-form').on('submit', function(e){
+        e.preventDefault()
+        var search = $('#search-text').val()
+        exchangeRates(search);
+        hotelBooking(search);
+        weatherCall(search)
+        var searchHistory = localStorage.getItem('searchHistory') || '[]';
+        var listOfSearchHistory = [...JSON.parse(searchHistory), search];
+        localStorage.setItem("searchHistory", JSON.stringify(listOfSearchHistory));
+        populateSearch();
+    })    
+
+    function initMap(lat, lon) {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: lat, lng: lon },
+            scrollwheel: true,
+            zoom: 8
         });
-     })
-}
+    } 
+
+    function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: 39.983334, lng: -82.983330 },
+            scrollwheel: true,
+            zoom: 8
+        });
+    }
+});
