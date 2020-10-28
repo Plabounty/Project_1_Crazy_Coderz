@@ -19,30 +19,21 @@ $(document).ready(function () {
     function hotelBooking(city) {
         var settings = {
             "async": true,
-            "crossDomain": true,
-            "url": "https://hotels4.p.rapidapi.com/locations/search?locale=en_US&query=" + city,
-            "method": "GET",
-            "headers": {
-                "x-rapidapi-host": "hotels4.p.rapidapi.com",
-                "x-rapidapi-key": "efb9190d78msh44fd7735c9188a6p17edbfjsn0f3829e74837"
-            }
-        };
+	"crossDomain": true,
+	"url": "https://hotels4.p.rapidapi.com/locations/search?locale=en_US&query=new%20york",
+	"method": "GET",
+	"headers": {
+		"x-rapidapi-host": "hotels4.p.rapidapi.com",
+		"x-rapidapi-key": "d1d3ee5eccmsh8bdee8240526fecp19e054jsn60d5b59645ff"
+        }
+    }
 
         $.ajax(settings).done(function (response) {
-            /*feature-map */
-            console.log('City: ', response);
             var coord = response.suggestions[0].entities[0];
-            console.log('Coord: ', coord)
             initMap(coord.latitude, coord.longitude)
-
-            console.log(response);
-            /* develop */
-            console.log('City: ', response);
             var coord = response.suggestions[0].entities[0];
-            console.log('Coord: ', coord)
             $('#map').empty().append(`
             <iframe
-            class="iframe"
             src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d24823.574025673028!2d-${coord.latitude}!3d${coord.longitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1603224169167!5m2!1sen!2sus"
             width="400"
             height="300"
@@ -75,13 +66,14 @@ $(document).ready(function () {
         });  
     }
 
-    function initMap() {
+  
+     function initMap(lat, lon) {
         var map = new google.maps.Map(document.getElementById('map'), {
-            center: { lat: 39.983334, lng: -82.983330 },
-            scrollwheel: true,
-            zoom: 8
-        });
-    }
+             center: { lat: lat, lng: lon },
+             scrollwheel: true,
+             zoom: 8
+         });
+     }
 
     function populateSearch() {
         var searchHistory = localStorage.getItem('searchHistory') || '[]';
