@@ -1,7 +1,12 @@
-*{
-    margin:0;
-    padding:0;
-}
+* {
+    margin: 0;
+    padding: 0;
+  }
+
+  #map {
+    height: 500px;
+    width: 50%;
+  }
 
 body {
     font-family: Georgia, "Times New Roman", Times, serif;
