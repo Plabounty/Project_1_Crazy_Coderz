@@ -1,24 +1,14 @@
-<<<<<<< HEAD
-    var APIKey = 'e7610467436ab1c59773adeceb236ff7'
-
-
-
-
-=======
 $(document).ready(function () {
     
     var APIKey = 'e7610467436ab1c59773adeceb236ff7';
     populateSearch();
     defaultSearch();
 
-<<<<<<< HEAD
-=======
     
->>>>>>> cfccf1e493f3c9a6e77b560528e4abf2496b193b
 
     
     
->>>>>>> develop
+
     function exchangeRates() {
         var query = "http://api.currencylayer.com/live?access_key=c783200a0ae3d77071075137f56ccece";
             $.ajax({
@@ -45,7 +35,6 @@ $(document).ready(function () {
         }
         
         $.ajax(settings).done(function (response) {
-<<<<<<< HEAD
 /*feature-map */ 
             console.log('City: ', response);
             var coord = response.suggestions[0].entities[0];
@@ -54,7 +43,6 @@ $(document).ready(function () {
         
             console.log(response);
 /* develop */
-=======
             console.log('City: ', response);
             var coord = response.suggestions[0].entities[0];
             console.log('Coord: ', coord)
@@ -74,7 +62,6 @@ $(document).ready(function () {
 
             `)
 
->>>>>>> develop
             $('.hotels').text('Hotels: ' + response.suggestions[3].entities[0].name + '/' + response.suggestions[3].entities[1].name )
         });
             
@@ -171,10 +158,7 @@ $(document).ready(function () {
         exchangeRates(search);
         hotelBooking(search);
         restaurants(search);
-<<<<<<< HEAD
-        weatherCall(search)
-    })
-=======
+
         weatherCall(search);
         var searchHistory = localStorage.getItem('searchHistory') || '[]';
         var listOfSearchHistory = [...JSON.parse(searchHistory), search];
@@ -182,7 +166,7 @@ $(document).ready(function () {
         populateSearch();
     })
 
-<<<<<<< HEAD
+
     /* feature-map */
 
     
@@ -201,7 +185,6 @@ $(document).ready(function () {
 
 
 /* develop */
-=======
-});
->>>>>>> cfccf1e493f3c9a6e77b560528e4abf2496b193b
->>>>>>> develop
+
+
+
