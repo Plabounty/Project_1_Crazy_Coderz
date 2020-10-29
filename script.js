@@ -15,7 +15,7 @@ $(document).ready(function () {
 
         }).then(function (response) {
             console.log(response);
-            $('.currency').text('Currency:' + '  USD/GBP  ' + response.quotes.USDGBP + '  USD/EUR  ' + response.quotes.USDEUR + '  USD/JPY  ' + response.quotes.USDJPY + '  USD/RUB  ' + response.quotes.USDRUB)
+            $('.currency').html('<span>Currency:</span>' + '  <span>USD/GBP</span>  ' + response.quotes.USDGBP + '  <span>USD/EUR</span>  ' + response.quotes.USDEUR + '  <span>USD/JPY</span>  ' + response.quotes.USDJPY + '  <span>USD/RUB</span>  ' + response.quotes.USDRUB)
         });
     }
 
@@ -32,7 +32,7 @@ $(document).ready(function () {
         };
 
         $.ajax(settings).done(function (response) {
-            $('.hotels').text('Hotels: ' + response.suggestions[3].entities[0].name + '/' + response.suggestions[3].entities[1].name)
+            $('.hotels').html('<span>Hotels:</span> ' + response.suggestions[3].entities[0].name + '/' + response.suggestions[3].entities[1].name)
         });
     };
 
@@ -47,20 +47,20 @@ $(document).ready(function () {
         }).then(function (response) {
             console.log(queryURL)
             console.log(response)
-            $('.weather').text('Weather: ' + response.main.temp + ' °F')
-            $('.location').text('Location: ' + response.name)
+            $('.weather').html('<span>Weather:</span> ' + response.main.temp + ' °F')
+            $('.location').html('<span>Location:</span> ' + response.name)
             initMap(response.coord.lat, response.coord.lon);
 
         });  
     }
 
-    function initMap(lati,long) {
-        map = new google.maps.Map(document.getElementById('map'), {
-            center: { lat: lati, lng: long },
-            scrollwheel: true,
-            zoom: 8
-        });
-    }
+    // function initMap(lati,long) {
+    //     map = new google.maps.Map(document.getElementById('map'), {
+    //         center: { lat: lati, lng: long },
+    //         scrollwheel: true,
+    //         zoom: 8
+    //     });
+    // }
 
     function populateSearch() {
         var searchHistory = localStorage.getItem('searchHistory') || '[]';
@@ -116,3 +116,14 @@ $(document).ready(function () {
         populateSearch();
     })
 });
+
+function initMap(lati,long) {
+    var parseLat = parseFloat(lati)
+    var parseLon = parseFloat(long)
+    map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: parseLat, lng: parseLon },
+        scrollwheel: true,
+        zoom: 8
+        
+    });
+}
