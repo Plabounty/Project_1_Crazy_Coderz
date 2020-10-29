@@ -8,7 +8,7 @@ $(document).ready(function () {
     defaultSearch();
 
     function exchangeRates() {
-        var query = "http://api.currencylayer.com/live?access_key=c783200a0ae3d77071075137f56ccece";
+        var query = "https://api.currencylayer.com/live?access_key=c783200a0ae3d77071075137f56ccece";
         $.ajax({
             url: query,
             method: "GET"
