@@ -73,3 +73,11 @@ body {
     text-align: left;
     color:black;
 }
+
+::placeholder {
+    color: black;
+}
+
+span {
+    font-weight: bold;
+}
